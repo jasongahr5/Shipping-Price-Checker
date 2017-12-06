@@ -27,11 +27,6 @@ def Costco_Shipping(url):
     
 
 def Home_Depot_Shipping(url):
-    """This opens up chrome. Scans through the webpage for the id buybelt
-    and then creates a list of all the items in buybelt with the class u__text--sucess. 
-    Then it chooses the second one in the list, the correct one shipping, not pickup or delivery
-    and saves it in a variable called shipping
-    """
     
     driver = webdriver.Chrome(r"C:\Users\Tut10\Desktop\PSTool-Python\chromedriver.exe")
     driver.get(url)
@@ -43,26 +38,43 @@ def Home_Depot_Shipping(url):
     
     free_delivery = driver.find_elements_by_xpath(r'//*[@id="buybelt"]/div[2]/div[2]/div/div[2]')
     
-    # Now it checks both for it
-    try:
-        if "Free Delivery" in free_delivery[0].text:
+    for x in free_delivery:
+        
+    
+    # Now it checks
+    #Free Delivery
+    #Standard Delivery
+        #print(x.text)
+    
+    
+        try:
+            if "Free Delivery" in x.text:
+                driver.quit()
+                file_to_write.close()
+                return "\t\t[+] Free Delivery"
+            elif "Get it as soon as tomorrow" in x.text:
+                driver.quit()
+                #file_to_write.write("Cell: " + str(cell) + "[*] Express Delivery " + url + '\n')
+                file_to_write.write("[*] Express Delivery " + url + "\n")
+                file_to_write.close()
+                return "\t\t[*] Express Delivery"
+            elif "Receive an email" in x.text:
+                driver.quit()
+                file_to_write.write("[-] Out of Stock %s\n" % url)
+                file_to_write.close()
+                return "\t\t[-] Out of stock!"
+            elif "Standard Delivery" in x.text:
+                driver.quit()
+                file_to_write.close()
+                return "\t\t[+] Standard Delivery"
+            #else:    
+                #driver.quit()
+                #file_to_write.write("[-] Out of stock %s\n" % url)
+                #file_to_write.close()
+                #return "\t\t[-] Out of stock!"
+        except Exception as e:
             driver.quit()
-            file_to_write.close()
-            return "\t\t[+] Free Delivery"
-        elif "Get it as soon as tomorrow" or "Schedule delivery to your home or jobsite" in free_delivery[0].text:
-            driver.quit()
-            #file_to_write.write("Cell: " + str(cell) + "[*] Express Delivery " + url + '\n')
-            file_to_write.write("[*] Express Delivery " + url + "\n")
-            file_to_write.close()
-            return "\t\t[*] Express Delivery"
-        else:    
-            driver.quit()
-            file_to_write.write("[-] Out of stock %s\n" % url)
-            file_to_write.close()
-            return "\t\t[-] Out of stock!"
-    except Exception as e:
-        driver.quit()
-        print(e)    
+            print(e)    
 
 def Kohls_Shipping(url):
     pass

@@ -49,13 +49,15 @@ def download_links():
         for cell in row:
             if "homedepot.com" in cell.value:
                 stock = shipping_functions.Home_Depot_Shipping(cell.value)
+                print(stock)
             
             elif "costco.com" in cell.value:
                 stock = shipping_functions.Costco_Shipping(cell.value)
+                print(stock)
             else:
                 print("\t\t[!] Not Home Depot or Costco Item")
             print("\t\t[+] Item: %s" % cell.value)
-            print(stock)
+            
             
                 
     print("[*] Finished lopping thru!")
